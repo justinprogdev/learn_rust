@@ -1,0 +1,48 @@
+# === General ===
+*.log
+*.tmp
+*.bak
+*.swp
+
+# === OS: Ubuntu / Linux ===
+*~
+.cache/
+Thumbs.db
+.DS_Store
+
+# === Rust ===
+/target/
+/**/target/
+!/.cargo/config.toml
+Cargo.lock
+
+# If you're publishing the package, keep Cargo.lock
+# but ignore it otherwise in libraries
+
+# === VS Code ===
+.vscode/
+.history/
+
+# === Backup/Build Artifacts ===
+*.rs.bk
+*.rs.bak
+*.rlib
+
+# === IDE Tools ===
+.idea/
+*.iml
+
+# === By-products ===
+*.dSYM/
+*.profraw
+*.gcda
+*.gcno
+*.gcov
+
+# === Optional: Node tools (if using wasm or frontend tools) ===
+node_modules/
+dist/
+build/
+
+# === Optional: Editor tools ===
+*.code-workspace
