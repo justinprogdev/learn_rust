@@ -1,7 +1,6 @@
 [package]
-name = "ch2-complex"
+name = "ch2-loops"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-num = "0.4.3"

@@ -1,0 +1,4 @@
+- Statements are instructions that perform some action and do not return a value.
+- Expressions evaluate to a resultant value.
+
+
