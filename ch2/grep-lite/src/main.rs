@@ -1,49 +1,32 @@
+use regex::Regex;
+
+// Clap allows us to capture command line args
+use clap::{App, Arg};
+
+
 fn main() {
-    let context_lines = 2;
-    let needle = "oo";
-    let haystack = "\
-    Every face, every shop, 
-    bedroom window, public-house, and 
-    dark square is a picture 
-    feverishly turned--in search of what?
-    It is the same with books.
-    What do we seek 
-    through millions of pages?";
+    let args = App::new("grep-lite")
+        .version("0.1")
+        .about("searches for patterns")
+        .arg(Arg::with_name("pattern")
+                .help("The pattern to search for")
+                .takes_value(true)
+                .required(true),
+        )
+        .get_matches();
 
-    let mut tags: Vec<usize> = vec![];
-    let mut context: Vec<Vec<(usize, String)>> = vec![];
+    let pattern = args.value_of("pattern").unwrap();
+    let re = Regex::new(pattern).unwrap();
 
-    // First pass, just capture lines where needle matches
-    for (i, line) in haystack.lines().enumerate() {
-        if line.contains(needle) {
-            tags.push(i);
+    let quote = "\
+    Every face, every shop, bedroom window, public-house, and 
+    dark square is a picture feverishly turned--in search of what?
+    It is the same with books. What do we seek through millions of pages?";
 
-            let v = Vec::with_capacity(2 * context_lines + 1);
-            context.push(v);
-        }
-    }
-
-    if tags.is_empty() {
-        return;
-    }
-
-    for (i, line) in haystack.lines().enumerate() {
-        for (j, tag) in tags.iter().enumerate() {
-            let lower_bound = tag.saturating_sub(context_lines);
-            let upper_bound = tag + context_lines;
-
-            if (i >= lower_bound) && (i <= upper_bound) {
-                let line_as_string = String::from(line);
-                let local_context = (i, line_as_string);
-                context[j].push(local_context);
-            }
-        }
-    }
-
-    for local_context in context.iter() {
-        for &(i, ref line) in local_context.iter() {
-            let line_number = i + 1;
-            println!("{}: {}", line_number, line);
-        }
+    for line in quote.lines() {
+       match re.find(line) {
+        Some (_) => println!("{}", line),
+        None => (),
+       }
     }
 }

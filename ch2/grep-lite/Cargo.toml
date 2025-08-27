@@ -2,7 +2,9 @@
 name = "grep-lite"
 version = "0.1.0"
 edition = "2024"
+authors = ["Tim McNamera, literally the author", "Justin, the humber learner"]
 
 [dependencies]
-clap = "2"
-regex = "1"
+clap = "3"
+regex = "1.11.2"
+
