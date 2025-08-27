@@ -4,7 +4,7 @@ use regex::Regex;
 use clap::{App, Arg};
 
 
-fn main() {
+fn main() { 
     let args = App::new("grep-lite")
         .version("0.1")
         .about("searches for patterns")
