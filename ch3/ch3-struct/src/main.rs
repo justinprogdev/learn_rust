@@ -1,9 +1,12 @@
 #[derive(Debug)]
+
+// Declare a struct to compose our File
 struct File {
     name: String,
     data: Vec<u8>,
 }
 
+// Use impl method definition to make the ctor
 impl File {
     fn new(name: &str) -> File {
         // <1> As `File::new()` is a completely normal function--rather than something blessed by the language--we need to tell Rust that it will be returning a `File` from this function
@@ -18,12 +21,14 @@ impl File {
     //   self.data.len() // <4> `usize` is the type returned by `Vec<T>::len()`, which is sent directly through to the caller
     // }
 
+    // Create a file with data from our 'new' ctor
     fn new_with_data(name: &str, data: Vec<u8>) -> File {
         let mut f = File::new(name);
         f.data = data.clone();
         f
     }
 
+    // Notice the self: keywork. This allows to extend a type for using .notation for method access
     fn read(self: &File, save_to: &mut Vec<u8>) -> usize {
         let mut tmp = self.data.clone();
         let read_length = tmp.len();
