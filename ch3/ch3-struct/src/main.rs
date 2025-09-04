@@ -1,42 +1,58 @@
-// Allows printlin! to print file
 #[derive(Debug)]
-
 struct File {
     name: String,
     data: Vec<u8>,
 }
 
+impl File {
+    fn new(name: &str) -> File {
+        // <1> As `File::new()` is a completely normal function--rather than something blessed by the language--we need to tell Rust that it will be returning a `File` from this function
+        File {
+            // <2>
+            name: String::from(name), // <2> `File::new()` does little more than encapsulate the object creation syntax
+            data: Vec::new(),         // <2>
+        }
+    }
+
+    // fn len(&self) -> usize {  // <3> `File::len()` takes an implicit argument `self`. You'll notice that there is no explicit argument provided on line 25.
+    //   self.data.len() // <4> `usize` is the type returned by `Vec<T>::len()`, which is sent directly through to the caller
+    // }
+
+    fn new_with_data(name: &str, data: Vec<u8>) -> File {
+        let mut f = File::new(name);
+        f.data = data.clone();
+        f
+    }
+
+    fn read(self: &File, save_to: &mut Vec<u8>) -> usize {
+        let mut tmp = self.data.clone();
+        let read_length = tmp.len();
+        save_to.reserve(read_length);
+        save_to.append(&mut tmp);
+        read_length
+    }
+}
 fn open(f: &mut File) -> bool {
-    true
+    true    
 }
 
 fn close(f: &mut File) -> bool {
     true
 }
 
-fn read(f: &File, save_to: &mut Vec<u8>) -> usize {
-    let mut tmp = f.data.clone();
-    let read_length = tmp.len();
-
-    save_to.reserve(read_length);
-    save_to.append(&mut tmp);
-    read_length
-}
-
 fn main() {
-    let mut f2 = File {
-        name: String::from("2.txt"),
-        data: vec![114, 117, 115, 116, 33],
-    };
+    let f3_data: Vec<u8> = vec![
+        114,117,115,116,33
+    ];
 
+    let mut f3 = File::new_with_data("2.txt", f3_data);
     let mut buffer: Vec<u8> = vec![];
-    open(&mut f2);
-    let f2_length = read(&f2, &mut buffer);
-    close(&mut f2);
+    open(&mut f3);
+    let f3_length = f3.read(&mut buffer);
+    close(&mut f3);
 
     let text = String::from_utf8_lossy(&buffer);
 
-    print!("{:?}", f2);
-    print!("{} is {} bytes long", f2.name, f2_length);
-    print!("{}", text)
+    println!("{:?}", f3);
+    println!("{} is {} bytes long", &f3.name, f3_length);
 }
